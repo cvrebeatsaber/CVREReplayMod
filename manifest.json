@@ -1,0 +1,10 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/nike4613/ModSaber-MetadataFileSchema/master/Schema.json",
+  "author": "Sc2ad",
+  "description": "CVRE Replay mod. Allows for saving and viewing of replays locally.",
+  "gameVersion": "0.13.2",
+  "id": null,
+  "name": "CVRE Replay",
+	"version": "0.0.1",
+	"features": []
+}
