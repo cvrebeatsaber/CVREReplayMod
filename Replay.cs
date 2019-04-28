@@ -14,7 +14,9 @@ namespace CVREReplayMod
         [Serializable]
         public class SongData
         {
+            [NonSerialized]
             static Saber a;
+            [NonSerialized]
             static Saber b;
 
             public SaberHistoryData.TimeAndPos saberA;
@@ -49,16 +51,31 @@ namespace CVREReplayMod
         }
         public List<SongData> Data { get; }
         public BeatmapLevelSO BeatmapData { get; }
+        public PracticeSettings Practice { get; private set; }
+        public GameplayModifiers Modifiers { get; private set; }
+        public PlayerSpecificSettings PlayerSettings { get; private set; }
+        public IDifficultyBeatmap Difficulty { get; private set; }
 
         public Replay()
         {
             Data = new List<SongData>();
             BeatmapData = UnityEngine.Object.FindObjectOfType<BeatmapLevelSO>();
+            SetupPreMap();
         }
         public Replay(BeatmapLevelSO so)
         {
             Data = new List<SongData>();
             BeatmapData = so;
+            SetupPreMap();
+        }
+        private void SetupPreMap()
+        {
+            SoloFreePlayFlowCoordinator coord = UnityEngine.Object.FindObjectOfType<SoloFreePlayFlowCoordinator>();
+            Practice = ((PlayerDataModelSO)typeof(SoloFreePlayFlowCoordinator).GetField("_playerDataModel", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(coord)).sharedPracticeSettings;
+            GameplaySetupViewController gameplayViewController = (GameplaySetupViewController)typeof(SoloFreePlayFlowCoordinator).GetField("_gameplaySetupViewController", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(coord);
+            Modifiers = new GameplayModifiers(gameplayViewController.gameplayModifiers);
+            PlayerSettings = gameplayViewController.playerSettings;
+            Difficulty = ((StandardLevelDetailViewController)typeof(SoloFreePlayFlowCoordinator).GetField("_levelDetailViewController", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(coord)).selectedDifficultyBeatmap;
         }
         public void Add(SongData d)
         {

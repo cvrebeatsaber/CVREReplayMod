@@ -9,7 +9,7 @@ namespace CVREReplayMod
 {
     public class Recorder : MonoBehaviour
     {
-        protected Replay replay;
+        public Replay replay { get; private set; }
         private void Awake()
         {
             Logger.log.Debug("Attempting to find BeatmapLevelSO...");
@@ -24,6 +24,7 @@ namespace CVREReplayMod
                 Logger.log.Debug("Creating new Replay object...");
                 replay = new Replay(d);
             }
+
         }
         private void LateUpdate()
         {

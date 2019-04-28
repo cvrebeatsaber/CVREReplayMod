@@ -4,6 +4,7 @@ using IPA.Utilities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using IPALogger = IPA.Logging.Logger;
+using CustomUI;
 
 namespace CVREReplayMod
 {
@@ -13,6 +14,7 @@ namespace CVREReplayMod
         internal static IConfigProvider configProvider;
 
         internal static Recorder recorder;
+        internal static ReplayPlayer playback;
 
         public void Init(IPALogger logger, [Config.Prefer("json")] IConfigProvider cfgProvider)
         {
@@ -60,6 +62,7 @@ namespace CVREReplayMod
                 {
                     // Recorder already exists, we want to playback our replay
                     Logger.log.Debug("Playing back replay...");
+                    
                 }
             }
             else if (nextScene.name == "MenuCore")
@@ -68,8 +71,24 @@ namespace CVREReplayMod
                 {
                     Logger.log.Debug("Displaying button to view replay...");
                     // Went from Game to Menu, we can create our button to view the replay here.
+                    CustomUI.MenuButton.MenuButton button = CustomUI.MenuButton.MenuButtonUI.AddButton("Replay", "Replays your last play of this song.", new UnityEngine.Events.UnityAction(() =>
+                    {
+                        Logger.log.Debug("Player pressed Replay button!");
+                        playback = new GameObject("Replay Playback").AddComponent<ReplayPlayer>();
+                        playback.Setup(recorder.replay);
+                    }));
+                    button.buttons[0].transform.position = new Vector3(0f, 0f, 2.5f);
                 }
-            } else
+            } else if (nextScene.name == "MainMenu")
+            {
+                if (prevScene.name == "MenuCore")
+                {
+                    // We went from the game end screen to the main menu.
+                    // Maybe show a button on the side for replaying the best scoring replay for this song?
+                    Logger.log.Debug("Recorder may not need to be destroyed here...");
+                }
+            }
+            else
             {
                 Logger.log.Debug("Destroying recorder...");
                 Object.Destroy(recorder);
