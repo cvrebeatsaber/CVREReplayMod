@@ -71,13 +71,13 @@ namespace CVREReplayMod
                 {
                     Logger.log.Debug("Displaying button to view replay...");
                     // Went from Game to Menu, we can create our button to view the replay here.
-                    CustomUI.MenuButton.MenuButton button = CustomUI.MenuButton.MenuButtonUI.AddButton("Replay", "Replays your last play of this song.", new UnityEngine.Events.UnityAction(() =>
+
+                    Util.CreateButton("Replay", new UnityEngine.Events.UnityAction(() =>
                     {
                         Logger.log.Debug("Player pressed Replay button!");
                         playback = new GameObject("Replay Playback").AddComponent<ReplayPlayer>();
                         playback.Setup(recorder.replay);
-                    }));
-                    button.buttons[0].transform.position = new Vector3(0f, 0f, 2.5f);
+                    }), "Replays your last play of this song.");
                 }
             } else if (nextScene.name == "MainMenu")
             {
