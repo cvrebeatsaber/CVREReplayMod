@@ -13,17 +13,18 @@ namespace CVREReplayMod
 {
     class Util
     {
-        private const string ControllerPanel = "ResultsViewController/SmallButtons";
-        private const string CopyButton = "CreditsButton";
+        private const string CopyButton = "RestartButton";
         public static void CreateButton(string text, UnityAction onClick, string hintText)
         {
             Logger.log.Debug("Creating button with message: " + text);
-            RectTransform panel = GameObject.Find(ControllerPanel).transform as RectTransform;
+            ResultsViewController controller = UnityEngine.Object.FindObjectOfType<ResultsViewController>();
+            RectTransform panel = controller.GetComponent<RectTransform>();
 
             if (panel == null)
             {
                 return;
             }
+            Logger.log.Debug("Non-null panel!");
 
             Button button = BeatSaberUI.CreateUIButton(panel, CopyButton, onClick, text);
             panel.Find(CopyButton).SetAsLastSibling();

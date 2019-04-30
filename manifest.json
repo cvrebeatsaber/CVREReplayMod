@@ -6,5 +6,8 @@
 	"gameVersion": "0.13.2",
 	"id": null,
 	"name": "CVRE Replay",
-	"version": "0.0.3"
+	"version": "0.0.3",
+	"dependsOn": {
+		"CVREBeatSaberPlugin": "^1.2.1"
+	}
 }
